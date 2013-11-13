@@ -420,7 +420,6 @@ service bugreport /system/bin/bugmailer.sh -v
     oneshot
     keycodes 114 115 116
 
-# FUSE sdcard daemon for rich permissions (runs as media_rw)
 service fuse_sdcard0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard0 /storage/sdcard0
     class late_start
     disabled
