@@ -39,10 +39,6 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/tinyalsa-audio.xml:system/etc/tinyalsa-audio.xml \
     $(COMMON_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
 
-# Bluetooth configuration files
-#PRODUCT_COPY_FILES += \
-#    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf
-
 # Wifi
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
@@ -119,8 +115,9 @@ PRODUCT_COPY_FILES += \
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=131072 \
-    debug.hwui.render_dirty_regions=false \
-    ro.bq.gpu_to_cpu_unsupported=1
+    ro.zygote.disable_gl_preload=true \
+    ro.bq.gpu_to_cpu_unsupported=1 \
+    debug.hwui.render_dirty_regions=false
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -182,8 +179,7 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp \
-    ro.zygote.disable_gl_preload=true
+    persist.sys.usb.config=mtp
 
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 
