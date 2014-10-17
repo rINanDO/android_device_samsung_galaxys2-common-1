@@ -181,3 +181,6 @@ TW_HAS_NO_RECOVERY_PARTITION := true
 
 # Use the non-open-source parts, if they're present
 -include vendor/samsung/galaxys2-common/BoardConfigVendor.mk
+
+# External apps on SD
+TARGET_EXTERNAL_APPS = sdcard1
