@@ -149,6 +149,9 @@
         <item>10</item>
     </integer-array>
 
+    <!-- Is the device LTE capable -->
+    <bool name="config_lte_capable">false</bool>
+
     <!-- The default iface on which to monitor data use -->
     <string name="config_datause_iface">pdp0</string>
     
@@ -157,11 +160,4 @@
 
     <!-- Boolean to enable stk functionality on Samsung phones -->
     <bool name="config_samsung_stk">true</bool>
-
-    <!-- If this is true, key chords can be used to take a screen record on the device. -->
-    <bool name="config_enableScreenrecordChord">false</bool>
-
-    <!-- Control whether a car dock event should override the default bluetooth
-         audio routing, FORCE_BT_CAR_DOCK, with an analog dock, FORCE_ANALOG_DOCK. -->
-    <bool name="config_forceAnalogCarDock">true</bool>
 </resources>
