@@ -57,9 +57,7 @@ PRODUCT_COPY_FILES += \
 # Packages
 PRODUCT_PACKAGES := \
     com.android.future.usb.accessory \
-    SamsungServiceMode \
-    DeviceSettings \
-    OmniTorch
+    SamsungServiceMode
 
 # Audio Packages
 PRODUCT_PACKAGES += \
