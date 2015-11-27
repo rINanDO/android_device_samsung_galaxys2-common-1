@@ -66,6 +66,10 @@ PRODUCT_PACKAGES += \
     libsamsung_symbols \
     ril-wrapper
 
+# Samsung symbols
+PRODUCT_PACKAGES += \
+    libsamsung_symbols
+
 # Audio Packages
 PRODUCT_PACKAGES += \
     AdvancedDisplay \
