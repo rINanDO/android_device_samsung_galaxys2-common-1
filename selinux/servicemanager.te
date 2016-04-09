@@ -1,0 +1,2 @@
+# DirtyUnicorns
+allow servicemanager zygote:process { getattr };

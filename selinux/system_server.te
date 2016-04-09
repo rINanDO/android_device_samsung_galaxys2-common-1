@@ -6,3 +6,8 @@ allow system_server system_file:file execmod;
 allow system_server uhid_device:chr_file { read write ioctl open };
 allow system_server dex2oat_exec:file { read open execute};
 allow system_server radio_data:dir search;
+
+# DirtyUnicorns
+allow system_server init:unix_stream_socket { getopt };
+allow system_server zygote:binder { call };
+allow system_server shell_prop:property_service { set };
