@@ -24,11 +24,6 @@ PRODUCT_COPY_FILES := \
     $(COMMON_PATH)/rootdir/init.smdk4210.rc:root/init.smdk4210.rc \
     $(COMMON_PATH)/rootdir/ueventd.smdk4210.rc:root/ueventd.smdk4210.rc
 
-# Resize /system
-PRODUCT_COPY_FILES += \
-    $(COMMON_PATH)/rootdir/root/e2fsck_static:root/sbin/e2fsck_static \
-    $(COMMON_PATH)/rootdir/root/resize2fs_static:root/sbin/resize2fs_static
-
 # Recovery rootdir
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/rootdir/init.recovery.smdk4210.rc:root/init.recovery.smdk4210.rc
