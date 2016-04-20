@@ -96,6 +96,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libsecmfcapi
 
+# Media
+PRODUCT_PACKAGES += \
+    Apollo \
+    audio_effects.conf \
+    DSPManager \
+    libcyanogen-dsp
+
 # OMX
 PRODUCT_PACKAGES += \
     libstagefrighthw \
