@@ -20,8 +20,6 @@ DEVICE_PACKAGE_OVERLAYS := $(COMMON_PATH)/overlay
 # Rootdir
 PRODUCT_COPY_FILES := \
     $(COMMON_PATH)/rootdir/fstab.smdk4210:root/fstab.smdk4210 \
-    $(COMMON_PATH)/rootdir/twrp.fstab:recovery/root/etc/twrp.fstab \
-    $(COMMON_PATH)/rootdir/lpm.rc:root/lpm.rc \
     $(COMMON_PATH)/rootdir/init.smdk4210.usb.rc:root/init.smdk4210.usb.rc \
     $(COMMON_PATH)/rootdir/init.smdk4210.rc:root/init.smdk4210.rc \
     $(COMMON_PATH)/rootdir/ueventd.smdk4210.rc:root/ueventd.smdk4210.rc
@@ -41,12 +39,14 @@ PRODUCT_COPY_FILES += \
 
 # Wifi
 PRODUCT_COPY_FILES += \
-    $(COMMON_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+    $(COMMON_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
+    $(COMMON_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
     $(COMMON_PATH)/configs/bcmdhd.cal:system/etc/wifi/bcmdhd.cal
 
 PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0 \
-    wifi.supplicant_scan_interval=15
+    wifi.supplicant_scan_interval=30 \
+    net.tethering.noprovisioning=true
 
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4330/device-bcm.mk)
 
@@ -59,11 +59,16 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES := \
     com.android.future.usb.accessory \
     SamsungServiceMode \
-    DeviceSettings \
-    OmniTorch
+    Snap
+
+# Legacy RIL
+PRODUCT_PACKAGES += \
+    libsamsung_symbols \
+    ril-wrapper
 
 # Audio Packages
 PRODUCT_PACKAGES += \
+    AdvancedDisplay \
     audio.primary.exynos4 \
     audio.a2dp.default \
     audio.r_submix.default \
@@ -91,6 +96,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libsecmfcapi
 
+# Media
+PRODUCT_PACKAGES += \
+    Apollo \
+    audio_effects.conf \
+    DSPManager \
+    libcyanogen-dsp
+
 # OMX
 PRODUCT_PACKAGES += \
     libstagefrighthw \
@@ -103,16 +115,16 @@ PRODUCT_PACKAGES += \
     libOMX.SEC.AVC.Decoder \
     libOMX.SEC.M4V.Decoder \
     libOMX.SEC.WMV.Decoder \
-    libOMX.SEC.VP8.Decoder \
-    libSEC_OMX_Venc \
     libOMX.SEC.AVC.Encoder \
-    libOMX.SEC.M4V.Encoder \
-    libSEC_OMX_Adec \
-    libOMX.SEC.MP3.Decoder
+    libSEC_OMX_Venc \
+    libOMX.SEC.M4V.Encoder
 
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
-    $(COMMON_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
+    $(COMMON_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -124,25 +136,44 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungExynos4RIL \
-    mobiledata.interfaces=pdp0,wlan0,gprs,ppp0 \
+    mobiledata.interfaces=pdp0,gprs,ppp0,rmnet0,rmnet1 \
     ro.telephony.call_ring.multiple=false \
     ro.telephony.call_ring.delay=3000
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
-    static_busybox \
     make_ext4fs \
+    resize2fs_static \
     setup_fs
+
+# F2FS Filesystem
+PRODUCT_PACKAGES += \
+    fsck.f2fs \
+    mkfs.f2fs
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
+    Galaxy4 \
+    HoloSpiralWallpaper \
+    LiveWallpapers \
     LiveWallpapersPicker \
+    MagicSmokeWallpapers \
+    NoiseField \
     PhaseBeam \
+    VisualizationWallpapers \
     librs_jni
+
+# Wifi
+PRODUCT_PACKAGES += \
+    dhcpcd.conf \
+    hostapd \
+    libwpa_client \
+    macloader \
+    wpa_supplicant \
+    wpa_supplicant.conf
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml \
     frameworks/native/data/etc/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
@@ -173,9 +204,9 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-# Set default USB interface
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp
+# Keylayouts
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/excluded-input-devices.xml:system/etc/excluded-input-devices.xml
 
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 

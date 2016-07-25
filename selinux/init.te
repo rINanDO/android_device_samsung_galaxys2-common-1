@@ -1,0 +1,15 @@
+allow init self:capability sys_module;
+allow init tmpfs:lnk_file create;
+allow init rild:process noatsecure;
+allow init debugfs:dir mounton;
+domain_trans(init, rootfs, cpboot-daemon)
+
+# DirtyUnicorns
+allow init debugfs:dir { mounton };
+allow init rootfs:file { execute_no_trans };
+allow init shell_exec:file { execute_no_trans };
+allow init sysfs_display:file { getattr };
+allow init debugfs:file { getattr };
+allow init unlabeled:dir { mounton };
+allow init servicemanager:binder { call };
+allow init devpts:chr_file { getattr ioctl };

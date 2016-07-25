@@ -59,7 +59,7 @@ struct exynos_camera_preset exynos_camera_presets_galaxys2[] = {
 		.metering = METERING_CENTER,
 		.params = {
 			.preview_size_values = "1280x720,640x480,720x480,800x480,800x450,352x288,320x240,176x144",
-			.preview_size = "640x480",
+			.preview_size = "800x450",
 			.preview_format_values = "yuv420sp,yuv420p,rgb565",
 			.preview_format = "yuv420sp",
 			.preview_frame_rate_values = "30,25,20,15,10,7",
@@ -80,8 +80,8 @@ struct exynos_camera_preset exynos_camera_presets_galaxys2[] = {
 			.video_snapshot_supported = 0,
 			.full_video_snap_supported = 0,
 
-			.recording_size = "720x480",
-			.recording_size_values = "1920x1080,1280x720,720x480,640x480",
+			.recording_size = "1280x720",
+			.recording_size_values = "1920x1080,1280x720,640x480",
 			.recording_format = "yuv420sp",
 
 			.focus_mode = "auto",
@@ -175,8 +175,8 @@ struct exynos_camera_preset exynos_camera_presets_galaxys2[] = {
 			.whitebalance = NULL,
 			.whitebalance_values = NULL,
 
-			.scene_mode = NULL,
-			.scene_mode_values = NULL,
+			.scene_mode = "none",
+			.scene_mode_values = "none",
 
 			.effect = NULL,
 			.effect_values = NULL,
@@ -2235,6 +2235,12 @@ int exynos_camera_recording_start(struct exynos_camera *exynos_camera)
 		}
 	}
 
+	rc = exynos_v4l2_s_ctrl(exynos_camera, 0, V4L2_CID_CAMERA_FOCUS_MODE, FOCUS_MODE_CONTINOUS);
+	if (rc < 0) {
+		ALOGE("%s: s ctrl failed!", __func__);
+		goto error;
+	}
+
 	rc = exynos_v4l2_s_ctrl(exynos_camera, 2, V4L2_CID_ROTATION,
 		exynos_camera->camera_rotation);
 	if (rc < 0) {
@@ -2290,6 +2296,11 @@ void exynos_camera_recording_stop(struct exynos_camera *exynos_camera)
 	exynos_camera->recording_enabled = 0;
 
 	pthread_mutex_lock(&exynos_camera->preview_mutex);
+
+	rc = exynos_v4l2_s_ctrl(exynos_camera, 0, V4L2_CID_CAMERA_FOCUS_MODE, FOCUS_MODE_AUTO);
+	if (rc < 0) {
+		ALOGE("%s: s ctrl failed!", __func__);
+	}
 
 	rc = exynos_v4l2_streamoff_cap(exynos_camera, 2);
 	if (rc < 0) {

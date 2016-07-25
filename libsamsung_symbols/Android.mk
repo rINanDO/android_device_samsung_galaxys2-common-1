@@ -1,5 +1,4 @@
-#
-# Copyright (C) 2008 The Android Open Source Project
+# Copyright (C) 2015 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os, sys
+LOCAL_PATH := $(call my-dir)
 
-LOCAL_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-RELEASETOOLS_DIR = os.path.abspath(os.path.join(LOCAL_DIR, '../../../build/tools/releasetools'))
+include $(CLEAR_VARS)
 
-# Add releasetools directory to python path
-sys.path.append(RELEASETOOLS_DIR)
+LOCAL_SRC_FILES := \
+    samsung_ril.cpp
 
-from common import *
+LOCAL_SHARED_LIBRARIES := libbinder
 
-def load_module_from_file(module_name, filename):
-    import imp
-    f = open(filename, 'r')
-    module = imp.load_module(module_name, f, filename, ('', 'U', 1))
-    f.close()
-    return module
+LOCAL_MODULE := libsamsung_symbols
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+
+include $(BUILD_SHARED_LIBRARY)
