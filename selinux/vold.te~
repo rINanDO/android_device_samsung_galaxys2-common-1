@@ -1,0 +1,6 @@
+allow vold sdcard_external:file rw_file_perms;
+<<<<<<< HEAD
+=======
+allow vold efs_device_file:dir rw_dir_perms;
+allow vold efs_device_file:file rw_file_perms;
+>>>>>>> 1c708f0... sepolicy: Address SELinux denials
